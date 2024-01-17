@@ -1,3 +1,11 @@
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth, initializeAuth } from 'firebase/auth';
+// import {
+//   getReactNativePersistence,
+//   ReactNativeAsyncStorage,
+// } from 'firebase/auth';
+
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -15,3 +23,14 @@ const firebaseConfig = {
   messagingSenderId: MESSAGING_SENDER_ID,
   appId: APP_ID,
 };
+
+const app = initializeApp(firebaseConfig);
+
+const firestore = getFirestore(app);
+
+// const auth = initializeApp(app, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+// });
+const auth = getAuth(app);
+
+export { auth, firestore };

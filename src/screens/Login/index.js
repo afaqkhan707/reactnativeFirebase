@@ -5,14 +5,17 @@ import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import { StatusBar } from 'expo-status-bar';
 import { loginSchema } from '../../schemas/formikSchemas';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../redux/slices/firebaseActions';
 
 const Login = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
- 
   const handleSignupNavigation = () => {
     navigation.navigate('signup');
   };
+  const auth = useSelector((state) => state.auth);
   const initialValues = {
     email: '',
     password: '',
@@ -26,6 +29,7 @@ const Login = () => {
         validationSchema={loginSchema}
         onSubmit={(values) => {
           console.log('values', values);
+          dispatch(loginUser(values, navigation));
         }}
       >
         {({
@@ -63,8 +67,9 @@ const Login = () => {
             )}
             <MyButton
               title='Login'
-              onPress={()=>handleSubmit(values)}
+              onPress={() => handleSubmit(values)}
               disabled={!values.isValid}
+              isLoading={auth.isLoading}
             />
             <MyButton title='Signup' onPress={handleSignupNavigation} />
           </>
@@ -77,10 +82,11 @@ export default Login;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

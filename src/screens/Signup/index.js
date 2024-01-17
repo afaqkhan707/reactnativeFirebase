@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import MyButton from '../../components/custom-button';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { Formik } from 'formik';
 import { signupSchema } from '../../schemas/formikSchemas';
-
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../../redux/slices/firebaseActions';
 const Signup = () => {
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   const handleLoginNavigation = () => {
     navigation.navigate('login');
   };
@@ -27,6 +28,7 @@ const Signup = () => {
         validationSchema={signupSchema}
         onSubmit={(values) => {
           console.log('values', values);
+          dispatch(registerUser(values, navigation));
         }}
       >
         {({
@@ -87,7 +89,11 @@ const Signup = () => {
           </>
         )}
       </Formik>
-      <MyButton title='Login' onPress={handleLoginNavigation} />
+      {/* <MyButton title='Login' onPress={handleLoginNavigation} /> */}
+      <Text color='#333'>Dont have an account?</Text>
+      <View style={styles.button}>
+        <Button title='Login' onPress={handleLoginNavigation} color='#ff7400' />
+      </View>
     </View>
   );
 };
@@ -119,5 +125,9 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+  },
+  button: {
+    borderRadius: 10,
+    marginTop: 10,
   },
 });

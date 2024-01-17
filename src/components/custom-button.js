@@ -6,13 +6,15 @@ import {
   View,
 } from 'react-native';
 
-const Button = ({ title, onPress }) => {
+const Button = ({ title, onPress, isLoading }) => {
   return (
     <TouchableOpacity style={styles.Button} onPress={onPress}>
       <Text style={styles.buttonText}>{title}</Text>
-      {/* {isloading && ( */}
-      {/* <ActivityIndicator style={{ position: 'absolute', right: 20 }} /> */}
-      {/* )} */}
+      {isLoading && (
+        <ActivityIndicator
+          style={{ position: 'absolute', right: 20, top: 10 }}
+        />
+      )}
     </TouchableOpacity>
   );
 };
@@ -30,5 +32,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     textAlign: 'center',
+    color: '#333',
   },
 });

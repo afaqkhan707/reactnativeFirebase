@@ -1,20 +1,32 @@
+// authSlice.js
+
 import { createSlice } from '@reduxjs/toolkit';
+
 const initialState = {
   currentUser: null,
+  error: null,
   isLoggedIn: false,
+  isLoading: false,
 };
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setCurrentUser: (state, action) => {
       state.currentUser = action.payload;
-      state.isLoggedIn = !!action.payload;
+      state.isLoggedIn = true;
+      state.error = null;
     },
-    // Add other authentication-related actions here
-    // Example: logout, updateProfile, setToken, etc.
+    setError: (state, action) => {
+      state.error = action.payload;
+      state.isLoggedIn = false;
+    },
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setCurrentUser, setError, setLoading } = authSlice.actions;
 export default authSlice.reducer;

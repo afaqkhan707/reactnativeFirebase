@@ -3,18 +3,13 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import MyButton from '../../components/custom-button';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { StatusBar } from 'expo-status-bar';
+import { loginSchema } from '../../schemas/formikSchemas';
 
 const Login = () => {
   const navigation = useNavigation();
 
-  const validationSchema = Yup.object({
-    email: Yup.string().email('Invalid email format').required('Required'),
-    password: Yup.string()
-      .min(6, 'Password must be at least 6 characters')
-      .required('Required'),
-  });
+ 
 
   const handleSubmit = (values) => {
     console.log('Submitted values:', values);
@@ -28,24 +23,24 @@ const Login = () => {
       <Text style={styles.heading}>Login</Text>
       <Formik
         initialValues={{ email: '', password: '' }}
-        validationSchema={validationSchema}
+        validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
         {({ handleChange, handleBlur, values, errors, touched }) => (
           <>
             <TextInput
-              placeholder='Enter your Email'
+              placeholder='Enter Email'
               name='email'
               value={values.email}
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}
               style={styles.input}
             />
-            {/* {touched.email && errors.email && (
+            {touched.email && errors.email && (
               <Text style={styles.errorText}>{errors.email}</Text>
-            )} */}
+            )}
             <TextInput
-              placeholder='Enter your Password'
+              placeholder='Enter Password'
               name='password'
               value={values.password}
               onChangeText={handleChange('password')}
@@ -54,9 +49,9 @@ const Login = () => {
               secureTextEntry={true}
             />
 
-            {/* {touched.password && errors.password && (
+            {touched.password && errors.password && (
               <Text style={styles.errorText}>{errors.password}</Text>
-            )} */}
+            )}
             <MyButton
               title='Login'
               onPress={() => handleSubmit(values)}
@@ -69,7 +64,6 @@ const Login = () => {
     </View>
   );
 };
-
 export default Login;
 
 const styles = StyleSheet.create({

@@ -10,23 +10,32 @@ const Login = () => {
   const navigation = useNavigation();
 
  
-
-  const handleSubmit = (values) => {
-    console.log('Submitted values:', values);
-  };
   const handleSignupNavigation = () => {
     navigation.navigate('signup');
+  };
+  const initialValues = {
+    email: '',
+    password: '',
   };
   return (
     <View style={styles.container}>
       <StatusBar translucent={false} backgroundColor='white' />
       <Text style={styles.heading}>Login</Text>
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={initialValues}
         validationSchema={loginSchema}
-        onSubmit={handleSubmit}
+        onSubmit={(values) => {
+          console.log('values', values);
+        }}
       >
-        {({ handleChange, handleBlur, values, errors, touched }) => (
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
           <>
             <TextInput
               placeholder='Enter Email'
@@ -54,8 +63,8 @@ const Login = () => {
             )}
             <MyButton
               title='Login'
-              onPress={() => handleSubmit(values)}
-              // disabled={!values.isValid}
+              onPress={()=>handleSubmit(values)}
+              disabled={!values.isValid}
             />
             <MyButton title='Signup' onPress={handleSignupNavigation} />
           </>

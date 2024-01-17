@@ -13,7 +13,7 @@ export const signupSchema = Yup.object({
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
     .required('Required'),
-  confirm_password: Yup.string
+  confirm_password: Yup.string() // <-- Add parentheses here
     .required('Required')
     .oneOf([Yup.ref('password'), null], 'Password must Match...'),
 });

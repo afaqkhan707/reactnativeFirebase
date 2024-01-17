@@ -5,9 +5,9 @@ import { Provider } from 'react-redux';
 
 export default function App() {
   return (
-      <Provider store={store}>
-        <MyStack />
-      </Provider>
+    <Provider store={store}>
+      <MyStack />
+    </Provider>
   );
 }
 

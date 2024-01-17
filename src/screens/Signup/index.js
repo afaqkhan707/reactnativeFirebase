@@ -45,6 +45,9 @@ const Signup = () => {
               onChangeText={handleChange('name')}
               style={styles.input}
             />
+            {touched.name && errors.name && (
+              <Text style={styles.errorText}>{errors.name}</Text>
+            )}
             <TextInput
               placeholder='Enter Email'
               name='email'
@@ -53,6 +56,9 @@ const Signup = () => {
               onBlur={handleBlur('email')}
               style={styles.input}
             />
+            {touched.email && errors.email && (
+              <Text style={styles.errorText}>{errors.email}</Text>
+            )}
             <TextInput
               placeholder='Enter Password'
               name='password'
@@ -62,6 +68,9 @@ const Signup = () => {
               secureTextEntry={true}
               style={styles.input}
             />
+            {touched.password && errors.password && (
+              <Text style={styles.errorText}>{errors.password}</Text>
+            )}
             <TextInput
               placeholder='Confirm Password'
               name='confirm_password'
@@ -71,6 +80,9 @@ const Signup = () => {
               secureTextEntry={true}
               style={styles.input}
             />
+            {touched.confirm_password && errors.confirm_password && (
+              <Text style={styles.errorText}>{errors.confirm_password}</Text>
+            )}
             <MyButton title='Signup' onPress={handleSubmit} />
           </>
         )}

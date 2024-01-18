@@ -12,6 +12,8 @@ import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { fetchTodos } from '../../redux/slices/firebaseActions';
 import { firestore } from '../../firebase/firebaseConf';
+import { query, collection, onSnapshot } from 'firebase/firestore';
+import MyModal from '../Modal/Modal';
 
 const Home = () => {
   const auth = useSelector((state) => state.auth);
@@ -27,20 +29,28 @@ const Home = () => {
   // const fetchTodos = () => {};
   const [todos, setTodos] = useState([]);
 
-  const fetchTodos = () => async () => {
-    const q = query(collection(firestore, 'todos'));
-    onSnapshot(q, (querySnapshot) => {
-      const notes = [];
-      querySnapshot.forEach((doc) => {
-        notes.push({ ...doc.data(), id: doc.id });
-      });
-      setTodos(notes);
-      console.log('notes', doc);
-    });
-  };
+  // const fetchTodos = () => async () => {
+  //   const q = query(collection(firestore, 'todos'));
+  //   onSnapshot(q, (querySnapshot) => {
+  //     const notes = [];
+  //     querySnapshot.forEach((doc) => {
+  //       notes.push({ ...doc.data(), id: doc.id });
+  //     });
+  //     setTodos(notes);
+  //     console.log('notes', doc);
+  //   });
+  // };
+
   useEffect(() => {
-    fetchTodos();
-    // dispatch(fetchTodos());
+    const docRef = query(collection(firestore, 'todos'));
+    onSnapshot(docRef, (snapshot) => {
+      const todo = [];
+      snapshot.forEach((doc) => {
+        todo.push({ ...doc.data(), id: doc.id });
+      });
+      setTodos(todo);
+      console.log(todo, 'todo');
+    });
   }, []);
 
   return (
@@ -61,14 +71,16 @@ const Home = () => {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={DATA}
+        data={todos}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         contentContainerStyle={{
           gap: 10,
         }}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.card}>
-            <Text>{item.title}</Text>
+            <Text>
+              <MyModal title={item.title} description={item.description} />
+            </Text>
           </TouchableOpacity>
         )}
         numColumns={2}

@@ -25,7 +25,7 @@ const Todo = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Add Todo Here</Text>
-      <TouchableOpacity style={styles.title}>
+      <TouchableOpacity style={styles.todo}>
         <TextInput
           placeholder='Enter Title'
           onChangeText={(title) =>
@@ -34,7 +34,7 @@ const Todo = () => {
           value={todo.title}
         />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.description}>
+      <TouchableOpacity style={styles.todo}>
         <TextInput
           placeholder='Enter Description'
           onChangeText={(description) =>
@@ -65,22 +65,21 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 30,
   },
-  title: {
+  todo: {
     borderRadius: 8,
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: '#1E9B1F',
     padding: 10,
   },
-  description: {
-    borderRadius: 8,
-    borderWidth: 3,
-    borderColor: '#1E9B1F',
-    padding: 10,
-    // height: 200,
-  },
+  // description: {
+  //   borderRadius: 8,
+  //   borderWidth: 2,
+  //   borderColor: '#1E9B1F',
+  //   padding: 10,
+  // },
   buttons: {
-    width: '40%',
+    width: '35%',
     flexDirection: 'row',
-    gap: 60,
+    gap: 94,
   },
 });

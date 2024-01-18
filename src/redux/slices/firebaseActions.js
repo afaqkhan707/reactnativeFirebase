@@ -4,8 +4,17 @@ import {
   signOut,
 } from 'firebase/auth';
 import { auth, firestore } from '../../firebase/firebaseConf';
-import { doc, setDoc, getDoc, collection, addDoc } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  addDoc,
+  getDocs,
+  onSnapshot,
+} from 'firebase/firestore';
 import { setCurrentUser, setError, setLoading } from './authSlice';
+import { useState } from 'react';
 
 // Handle Signup New User
 export const registerUser = (values, navigation) => async (dispatch) => {
@@ -51,7 +60,7 @@ export const loginUser = (values, navigation) => async (dispatch) => {
     dispatch(setCurrentUser(userDetails));
     navigation.navigate('dashboard');
   } catch (error) {
-    console.log('error in login', error);
+    // console.log('error in login', error);
     dispatch(setError(error.message));
   } finally {
     dispatch(setLoading(false));
@@ -67,7 +76,7 @@ export const logoutUser = (navigation) => async (dispatch) => {
     // Clear any additional user-related state if needed
     navigation.navigate('login');
   } catch (error) {
-    console.error('Error in logoutUser:', error);
+    // console.error('Error in logoutUser:', error);
     dispatch(setError(error.message));
   } finally {
     dispatch(setLoading(false));
@@ -77,13 +86,31 @@ export const logoutUser = (navigation) => async (dispatch) => {
 export const postTodo = (todo, userId, navigation) => async (dispatch) => {
   try {
     const postTodo = {
-      todo,
+      title: todo.title,
+      description: todo.description,
       userId,
     };
     const resp = await addDoc(collection(firestore, 'todos'), postTodo);
     navigation.navigate('dashboard');
     // console.log(resp, 'setData');
   } catch (error) {
-    console.log('error in todo', error.message);
+    // console.log('error in todo', error.message);
   }
 };
+
+// export const fetchTodos = () => async () => {
+//   const [todos, setTodos] = useState([]);
+//   const q = query(collection(db, 'todos'));
+//   onSnapshot(q, (querySnapshot) => {
+//     const notes = [];
+//     querySnapshot.forEach((doc) => {
+//       notes.push({ ...doc.data(), id: doc.id });
+//     });
+//     setTodos(notes);
+//     console.log('notes', doc);
+//   });
+// };
+// const fetchTodos = await getDocs(collection(firestore, 'todos'));
+// fetchTodos.forEach((item) => console.log('object item', item));
+// console.log('data from api', fetchTodos);
+// };

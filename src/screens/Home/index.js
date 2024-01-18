@@ -5,22 +5,44 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { fetchTodos } from '../../redux/slices/firebaseActions';
+import { firestore } from '../../firebase/firebaseConf';
 
 const Home = () => {
   const auth = useSelector((state) => state.auth);
   const navigation = useNavigation();
-  // if (!auth.isLoggedIn) {
-  //   return;
-  // }
-
+  const dispatch = useDispatch();
   const addTodo = () => {
     navigation.navigate('todo');
   };
+
+  // if (!auth.isLoggedIn) {
+  //   return;
+  // }
+  // const fetchTodos = () => {};
+  const [todos, setTodos] = useState([]);
+
+  const fetchTodos = () => async () => {
+    const q = query(collection(firestore, 'todos'));
+    onSnapshot(q, (querySnapshot) => {
+      const notes = [];
+      querySnapshot.forEach((doc) => {
+        notes.push({ ...doc.data(), id: doc.id });
+      });
+      setTodos(notes);
+      console.log('notes', doc);
+    });
+  };
+  useEffect(() => {
+    fetchTodos();
+    // dispatch(fetchTodos());
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar translucent={false} backgroundColor='#fff' />

@@ -71,7 +71,12 @@ const Login = () => {
               disabled={!values.isValid}
               isLoading={auth.isLoading}
             />
-            <MyButton title='Signup' onPress={handleSignupNavigation} />
+            <View style={styles.view}>
+              <Text>Already have an account?</Text>
+              <Text style={styles.link} onPress={handleSignupNavigation}>
+                Login
+              </Text>
+            </View>
           </>
         )}
       </Formik>
@@ -106,5 +111,13 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+  },
+  view: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  link: {
+    color: '#0000ff',
+    marginLeft: 10,
   },
 });

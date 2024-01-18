@@ -1,19 +1,19 @@
 import * as Yup from 'yup';
 
 export const loginSchema = Yup.object({
-  email: Yup.string().email('Invalid email format').required('Required'),
+  email: Yup.string().email('Invalid email format').required(),
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
-    .required('Required'),
+    .required(),
 });
 
 export const signupSchema = Yup.object({
-  name: Yup.string().min(2).max(20).required('Please Enter Your Name'),
-  email: Yup.string().email('Invalid email format').required('Required'),
+  name: Yup.string().min(2).max(20).required(),
+  email: Yup.string().email('Invalid email format').required(),
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
-    .required('Required'),
-  confirm_password: Yup.string() // <-- Add parentheses here
-    .required('Required')
+    .required(),
+  confirm_password: Yup.string()
+    .required()
     .oneOf([Yup.ref('password'), null], 'Password must Match...'),
 });

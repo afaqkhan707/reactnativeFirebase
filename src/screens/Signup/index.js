@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import { signupSchema } from '../../schemas/formikSchemas';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../redux/slices/firebaseActions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const Signup = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -89,15 +90,15 @@ const Signup = () => {
           </>
         )}
       </Formik>
-      {/* <MyButton title='Login' onPress={handleLoginNavigation} /> */}
-      <Text color='#333'>Dont have an account?</Text>
-      <View style={styles.button}>
-        <Button title='Login' onPress={handleLoginNavigation} color='#ff7400' />
+      <View style={styles.view}>
+        <Text>Don't have an account?</Text>
+        <Text style={styles.link} onPress={handleLoginNavigation}>
+          Create One
+        </Text>
       </View>
     </View>
   );
 };
-
 export default Signup;
 
 const styles = StyleSheet.create({
@@ -126,8 +127,12 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
   },
-  button: {
-    borderRadius: 10,
+  view: {
+    flexDirection: 'row',
     marginTop: 10,
+  },
+  link: {
+    color: '#0000ff',
+    marginLeft: 10,
   },
 });

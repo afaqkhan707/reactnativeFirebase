@@ -10,14 +10,14 @@ import { StatusBar } from 'expo-status-bar';
 import { useDispatch, useSelector } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { fetchTodos } from '../../redux/slices/firebaseActions';
+import { LoggedUser, fetchTodos } from '../../redux/slices/firebaseActions';
 import { firestore } from '../../firebase/firebaseConf';
 import { query, collection, onSnapshot } from 'firebase/firestore';
 import MyModal from '../Modal/Modal';
 
 const Home = () => {
   const auth = useSelector((state) => state.auth);
-  const userId = useSelector((state) => state.auth.currentUser.userId);
+  const userId = useSelector((state) => state.auth?.currentUser.userId);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const addTodo = () => {
@@ -28,6 +28,9 @@ const Home = () => {
   if (!auth.isLoggedIn) {
     return;
   }
+  // useEffect(() => {
+  //   dispatch(LoggedUser());
+  // }, []);
 
   useEffect(() => {
     if (userId) dispatch(fetchTodos(userId));

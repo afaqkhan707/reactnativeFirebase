@@ -6,10 +6,10 @@ import Settings from '../Settings';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Todo from '../Todo';
-import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
+
 const Dashboard = () => {
   return (
     <Tab.Navigator>

@@ -5,6 +5,7 @@ import Login from '../screens/Login';
 import Signup from '../screens/Signup';
 import Dashboard from '../screens/Dashboard';
 import Todo from '../screens/Todo';
+import Profile from '../screens/Account';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,11 @@ const MyStack = () => {
         <Stack.Screen
           name='todo'
           component={Todo}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='profile'
+          component={Profile}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

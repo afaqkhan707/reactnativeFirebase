@@ -14,14 +14,20 @@ import { useNavigation } from '@react-navigation/native';
 const Todo = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
   const userId = useSelector((state) => state.auth.currentUser.userId);
   const isLoading = useSelector((state) => state.todo.isLoading);
+
   const [todo, setTodo] = useState({ title: '', description: '' });
+
   const handleTodo = () => {
     dispatch(postTodo(todo, userId, navigation));
+    setTodo({ title: '', description: '' });
   };
+
   const handleCancelTodo = () => {
     navigation.goBack('dashboard');
+    setTodo({ title: '', description: '' });
   };
   return (
     <View style={styles.container}>

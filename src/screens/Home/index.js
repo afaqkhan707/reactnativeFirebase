@@ -17,49 +17,34 @@ import MyModal from '../Modal/Modal';
 
 const Home = () => {
   const auth = useSelector((state) => state.auth);
+  const userId = useSelector((state) => state.auth.currentUser.userId);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const addTodo = () => {
     navigation.navigate('todo');
   };
+  const [todos, setTodos] = useState();
 
-  // if (!auth.isLoggedIn) {
-  //   return;
-  // }
-  // const fetchTodos = () => {};
-  const [todos, setTodos] = useState([]);
-
-  // const fetchTodos = () => async () => {
-  //   const q = query(collection(firestore, 'todos'));
-  //   onSnapshot(q, (querySnapshot) => {
-  //     const notes = [];
-  //     querySnapshot.forEach((doc) => {
-  //       notes.push({ ...doc.data(), id: doc.id });
-  //     });
-  //     setTodos(notes);
-  //     console.log('notes', doc);
-  //   });
-  // };
+  if (!auth.isLoggedIn) {
+    return;
+  }
 
   useEffect(() => {
-    const docRef = query(collection(firestore, 'todos'));
-    onSnapshot(docRef, (snapshot) => {
-      const todo = [];
-      snapshot.forEach((doc) => {
-        todo.push({ ...doc.data(), id: doc.id });
-      });
-      setTodos(todo);
-      console.log(todo, 'todo');
-    });
+    if (userId) dispatch(fetchTodos(userId));
   }, []);
 
+  const todosList = useSelector((state) => state.todo.todos);
+  useEffect(() => {
+    setTodos(todosList);
+    console.log('todos', todosList);
+  }, [todosList]);
   return (
     <View style={styles.container}>
       <StatusBar translucent={false} backgroundColor='#fff' />
 
       <View style={styles.header}>
         <Text style={styles.userName}>
-          User Name,{auth?.currentUser?.username}
+          Welcome ,{auth?.currentUser?.username}
         </Text>
         <TouchableOpacity style={styles.addIcon}>
           <Feather
@@ -72,15 +57,15 @@ const Home = () => {
       </View>
       <FlatList
         data={todos}
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        columnWrapperStyle={{
+          justifyContent: 'space-between',
+        }}
         contentContainerStyle={{
           gap: 10,
         }}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.card}>
-            <Text>
-              <MyModal title={item.title} description={item.description} />
-            </Text>
+            <MyModal item={item} />
           </TouchableOpacity>
         )}
         numColumns={2}
@@ -91,20 +76,7 @@ const Home = () => {
 };
 
 export default Home;
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f5f5f5',
@@ -112,12 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
-    backgroundColor: '#fff',
     width: '49%',
-    height: 80,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   header: {
     flexDirection: 'row',

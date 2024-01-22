@@ -12,9 +12,18 @@ import {
   addDoc,
   getDocs,
   onSnapshot,
+  deleteDoc,
+  where,
+  query,
 } from 'firebase/firestore';
 import { setCurrentUser, setError, setLoading } from './authSlice';
 import { useState } from 'react';
+import {
+  addTodo,
+  setDeleteTodo,
+  updateTodo,
+  setLoadingAdd,
+} from '../slices/todoSlice';
 
 // Handle Signup New User
 export const registerUser = (values, navigation) => async (dispatch) => {
@@ -84,6 +93,7 @@ export const logoutUser = (navigation) => async (dispatch) => {
 };
 
 export const postTodo = (todo, userId, navigation) => async (dispatch) => {
+  dispatch(setLoading(true));
   try {
     const postTodo = {
       title: todo.title,
@@ -91,26 +101,43 @@ export const postTodo = (todo, userId, navigation) => async (dispatch) => {
       userId,
     };
     const resp = await addDoc(collection(firestore, 'todos'), postTodo);
-    navigation.navigate('dashboard');
-    // console.log(resp, 'setData');
+    navigation.navigate('Home');
   } catch (error) {
-    // console.log('error in todo', error.message);
+    console.log('error in todo', error.message);
+  } finally {
+    dispatch(setLoadingAdd(false));
   }
 };
+export const removeTodo = (todoId) => async (dispatch) => {
+  try {
+    const deletedTodo = await deleteDoc(doc(firestore, 'todos', todoId));
+    // dispatch(setDeleteTodo(todoId));
+    // console.log(deletedTodo, 'deleted');
+  } catch (error) {
+    // console.log('deleting Todo Error', error.message);
+  }
+};
+export const fetchTodos = (userId) => async (dispatch) => {
+  const docRef = query(
+    collection(firestore, 'todos'),
+    where('userId', '==', userId)
+  );
+  onSnapshot(docRef, (snapshot) => {
+    const todo = [];
+    snapshot.forEach((doc) => {
+      todo.push({ ...doc.data(), id: doc.id });
+    });
+    dispatch(addTodo(todo));
+    // console.log(todo, 'todo');
+  });
+};
 
-// export const fetchTodos = () => async () => {
-//   const [todos, setTodos] = useState([]);
-//   const q = query(collection(db, 'todos'));
-//   onSnapshot(q, (querySnapshot) => {
-//     const notes = [];
-//     querySnapshot.forEach((doc) => {
-//       notes.push({ ...doc.data(), id: doc.id });
-//     });
-//     setTodos(notes);
-//     console.log('notes', doc);
-//   });
-// };
-// const fetchTodos = await getDocs(collection(firestore, 'todos'));
-// fetchTodos.forEach((item) => console.log('object item', item));
-// console.log('data from api', fetchTodos);
-// };
+export const LoggedUser = () => async (dispatch) => {
+  await onAuthStateChanged(auth, (user) => {
+    if (user) {
+      dispatch(setCurrentUser(user));
+    } else {
+      dispatch(setCurrentUser(null));
+    }
+  });
+};

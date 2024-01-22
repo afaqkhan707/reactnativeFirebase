@@ -15,6 +15,7 @@ const Todo = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const userId = useSelector((state) => state.auth.currentUser.userId);
+  const isLoading = useSelector((state) => state.todo.isLoading);
   const [todo, setTodo] = useState({ title: '', description: '' });
   const handleTodo = () => {
     dispatch(postTodo(todo, userId, navigation));
@@ -46,8 +47,12 @@ const Todo = () => {
         />
       </TouchableOpacity>
       <View style={styles.buttons}>
-        <Button title='Cancel' onPress={handleCancelTodo} />
-        <Button title='Add' onPress={handleTodo} />
+        <Button
+          title='Cancel'
+          onPress={handleCancelTodo}
+          isLoading={isLoading}
+        />
+        <Button title='Add' onPress={handleTodo} isLoading={isLoading} />
       </View>
     </View>
   );

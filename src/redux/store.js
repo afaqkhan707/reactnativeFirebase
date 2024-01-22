@@ -5,7 +5,7 @@ import todoReducer from '../redux/slices/todoSlice';
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    todos: todoReducer,
+    todo: todoReducer,
     // other reducers can be added here
   },
 });

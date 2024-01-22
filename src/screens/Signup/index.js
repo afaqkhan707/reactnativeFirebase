@@ -5,12 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { Formik } from 'formik';
 import { signupSchema } from '../../schemas/formikSchemas';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../redux/slices/firebaseActions';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 const Signup = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const handleLoginNavigation = () => {
     navigation.navigate('login');
   };
@@ -86,7 +86,11 @@ const Signup = () => {
             {touched.confirm_password && errors.confirm_password && (
               <Text style={styles.errorText}>{errors.confirm_password}</Text>
             )}
-            <MyButton title='Signup' onPress={handleSubmit} />
+            <MyButton
+              title='Signup'
+              onPress={handleSubmit}
+              isLoading={isLoading}
+            />
           </>
         )}
       </Formik>

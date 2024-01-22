@@ -77,7 +77,7 @@ export const Logout = (navigation) => async (dispatch) => {
     await signOut(auth);
     dispatch(setCurrentUser({ userDetails: null, status: false, error: null }));
     console.log('Logout successful');
-    // navigation.navigate('signup');
+    navigation.navigate('signup');
   } catch (error) {
     console.error('Error in logoutUser:', error);
     dispatch(setError(error.message));

@@ -4,10 +4,10 @@
     "slug": "reactnative",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/todo-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/todo-icon.png",
+      "image": "./assets/splash-latest.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

@@ -15,6 +15,7 @@ import {
   deleteDoc,
   where,
   query,
+  updateDoc,
 } from 'firebase/firestore';
 import { setCurrentUser, setError, setLoading, setLogout } from './authSlice';
 import { addTodo, setLoadingAdd } from '../slices/todoSlice';
@@ -37,7 +38,7 @@ export const registerUser = (values, navigation) => async (dispatch) => {
     };
 
     await setDoc(doc(firestore, 'users', userId), userDetails);
-    dispatch(setCurrentUser(userDetails));
+    setCurrentUser({ userDetails: userDetails, status: true, error: null });
     navigation.navigate('login');
   } catch (error) {
     dispatch(setError(error.code));
@@ -63,8 +64,8 @@ export const loginUser = (values, navigation) => async (dispatch) => {
     );
     navigation.navigate('dashboard');
   } catch (error) {
-    // console.log('error in login', error);
-    dispatch(setError(error.message));
+    console.log('error in login', error.code);
+    dispatch(setError(error.code));
   } finally {
     dispatch(setLoading(false));
   }
@@ -76,6 +77,7 @@ export const Logout = (navigation) => async (dispatch) => {
   try {
     await signOut(auth);
     dispatch(setCurrentUser({ userDetails: null, status: false, error: null }));
+    dispatch(addTodo([]));
     console.log('Logout successful');
     navigation.navigate('signup');
   } catch (error) {
@@ -111,6 +113,23 @@ export const removeTodo = (todoId) => async (dispatch) => {
   } finally {
   }
 };
+export const updateTodo = (localTodo, todoId) => async (dispatch) => {
+  const title = localTodo.title;
+  const description = localTodo.description;
+
+  console.log('title', title);
+  console.log('title', description);
+
+  try {
+    updateDoc(doc(firestore, 'todos', todoId), {
+      title,
+      description,
+    });
+  } catch (error) {
+    console.log('updating Todo Error', error.message);
+  } finally {
+  }
+};
 
 export const fetchTodos = (userId) => async (dispatch) => {
   const docRef = query(
@@ -123,7 +142,6 @@ export const fetchTodos = (userId) => async (dispatch) => {
       todo.push({ ...doc.data(), id: doc.id });
     });
     dispatch(addTodo(todo));
-    // console.log(todo, 'todo');
   });
 };
 

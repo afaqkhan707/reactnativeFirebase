@@ -11,7 +11,7 @@ import { loginUser } from '../../redux/slices/firebaseActions';
 const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
+  const error = useSelector((state) => state.auth.error);
   const handleSignupNavigation = () => {
     navigation.navigate('signup');
   };
@@ -76,6 +76,14 @@ const Login = () => {
               <Text style={styles.link} onPress={handleSignupNavigation}>
                 Login
               </Text>
+            </View>
+            <View>
+              {error && (
+                <>
+                  <Text style={{ color: 'red' }}>{error}</Text>
+                  {/* <Text>user email or password does not exist</Text> */}
+                </>
+              )}
             </View>
           </>
         )}

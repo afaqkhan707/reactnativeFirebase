@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
     gap: 20,
+    backgroundColor: '#fff',
   },
   heading: {
     fontSize: 30,

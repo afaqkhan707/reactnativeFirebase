@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   Modal,
@@ -8,22 +8,44 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
-import { removeTodo } from '../../redux/slices/firebaseActions';
+import { removeTodo, updateTodo } from '../../redux/slices/firebaseActions';
 import CustomModalDelete from '../../components/custom-modal';
+import { useNavigation } from '@react-navigation/native';
+
 const MyModal = ({ item }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const [editTodo, setEditTodo] = useState({ title: '', description: '' });
+  const [isEditable, setIsEditable] = useState(false);
+
+  useEffect(() => {
+    setEditTodo(item);
+  }, [item]);
+
   const deleteTodo = (todoId) => {
     dispatch(removeTodo(todoId));
-    console.log('todoId', todoId);
+  };
+
+  const closeModal = () => {
+    setIsEditable(false);
+    setModalVisible(!modalVisible);
+  };
+  const updateTodoHandle = (updateTodoId) => {
+    dispatch(updateTodo(editTodo, updateTodoId));
+    setIsEditable(false);
+    setModalVisible(!modalVisible);
+    navigation.navigate('Home');
   };
   return (
     <>
-      {/* <StatusBar translucent={false} backgroundColor='#fff' /> */}
+      {/* <StatusBar translucent={false} backgroundColor='#000' /> */}
       <Pressable
         style={[styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
@@ -44,22 +66,55 @@ const MyModal = ({ item }) => {
           <View style={styles.centeredView}>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={closeModal}
             >
               <Entypo name='cross' size={24} color='black' />
             </Pressable>
             <View style={styles.modalView}>
-              <Text style={styles.titleText}>{item.title}</Text>
-              <Text style={styles.modalText}>{item.description}</Text>
-
+              {isEditable ? (
+                <TouchableOpacity style={styles.todo}>
+                  <TextInput
+                    onChangeText={(title) =>
+                      setEditTodo((prevTodo) => ({ ...prevTodo, title }))
+                    }
+                    value={editTodo.title}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <Text style={styles.titleText}>{editTodo.title}</Text>
+              )}
+              {isEditable ? (
+                <TouchableOpacity style={styles.todo}>
+                  <TextInput
+                    onChangeText={(description) =>
+                      setEditTodo((prevTodo) => ({ ...prevTodo, description }))
+                    }
+                    value={editTodo.description}
+                    multiline
+                    numberOfLines={5}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <Text style={styles.modalText}>{editTodo.description}</Text>
+              )}
               <View style={styles.bottomNote}>
                 <TouchableOpacity>
                   <CustomModalDelete
-                    icon={<AntDesign name='delete' size={24} color='black' />}
+                    title='Are you sure you want to delete the document?'
+                    okText='Delete'
+                    cancelText='Cancel'
+                    openBtn={
+                      <AntDesign name='delete' size={24} color='black' />
+                    }
                     onPress={() => deleteTodo(item.id)}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                {isEditable && (
+                  <TouchableOpacity onPress={() => updateTodoHandle(item.id)}>
+                    <AntDesign name='save' size={24} color='black' />
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity onPress={() => setIsEditable(true)}>
                   <AntDesign name='edit' size={24} color='black' />
                 </TouchableOpacity>
               </View>
@@ -79,6 +134,7 @@ const styles = StyleSheet.create({
     // marginTop: 22,
     backgroundColor: 'rgba(0, 0, 0, .6);',
     // padding: 20,
+    paddingHorizontal: 20,
   },
   modalView: {
     margin: 20,
@@ -129,11 +185,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     position: 'absolute',
-    backgroundColor: 'pink',
+    backgroundColor: '#2196F3',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 16,
     bottom: 20,
+  },
+  todo: {
+    borderRadius: 8,
+    borderWidth: 0.5,
+    // width: '100%',
+    // flexGrow: 1,
+    borderColor: '#2196F3',
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    marginBottom: 10,
   },
 });
 

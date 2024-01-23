@@ -10,6 +10,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '../../components/custom-button';
 import { Logout } from '../../redux/slices/firebaseActions';
+import CustomModalDelete from '../../components/custom-modal';
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
@@ -45,10 +46,18 @@ const SettingsScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <Button
+      {/* <Button
         title='Logout'
         onPress={handleLogout}
         isLoading={auth.isLoading}
+      /> */}
+      <CustomModalDelete
+        title='Are you sure you want to Logout?'
+        okText='Logout'
+        cancelText='Cancel'
+        onPress={() => handleLogout()}
+        openBtn={<Button title='Logout' isLoading={auth.isLoading} />}
+        // openBtn='Logout'
       />
     </ScrollView>
   );

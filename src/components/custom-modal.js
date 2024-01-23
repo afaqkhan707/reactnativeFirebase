@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 
-const CustomModalDelete = ({ icon, onPress }) => {
+const CustomModalDelete = ({ title, okText, cancelText, openBtn, onPress }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleDelete = () => {
+  const handleOk = () => {
     onPress();
     setModalVisible(false);
   };
@@ -20,30 +20,28 @@ const CustomModalDelete = ({ icon, onPress }) => {
         }}
       >
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>
-            Are you sure you want to delete the document?
-          </Text>
+          <Text style={styles.modalText}>{title}</Text>
           <View style={styles.buttonContainer}>
             <Pressable
               style={[styles.button, styles.buttonDelete]}
-              onPress={handleDelete}
+              onPress={handleOk}
             >
-              <Text style={styles.textStyle}>Delete</Text>
+              <Text style={styles.textStyle}>{okText}</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonCancel]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={styles.textStyle}>Cancel</Text>
+              <Text style={styles.textStyle}>{cancelText}</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
       <Pressable
-        // style={[styles.button, styles.buttonOpen]}
+        style={[styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
       >
-        <Text>{icon}</Text>
+        <Text>{openBtn}</Text>
       </Pressable>
     </View>
   );
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: -2, // Negative height to move the shadow below
+      height: -2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -86,7 +84,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    // backgroundColor: '#F194FF',
+    flex: 1,
   },
   buttonDelete: {
     backgroundColor: 'red',

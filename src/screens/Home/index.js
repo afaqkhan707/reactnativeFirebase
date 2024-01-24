@@ -41,6 +41,7 @@ const Home = () => {
     setTodos(todosList);
     console.log('todos', todosList);
   }, [todosList]);
+  
   return (
     <View style={styles.container}>
       <StatusBar translucent={false} backgroundColor='#fff' />

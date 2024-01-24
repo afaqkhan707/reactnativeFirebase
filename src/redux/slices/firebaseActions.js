@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
@@ -79,7 +80,7 @@ export const Logout = (navigation) => async (dispatch) => {
     dispatch(setCurrentUser({ userDetails: null, status: false, error: null }));
     dispatch(addTodo([]));
     console.log('Logout successful');
-    navigation.navigate('signup');
+    navigation.navigate('login');
   } catch (error) {
     console.error('Error in logoutUser:', error);
     dispatch(setError(error.message));
@@ -145,12 +146,23 @@ export const fetchTodos = (userId) => async (dispatch) => {
   });
 };
 
-// export const LoggedUser = () => async (dispatch) => {
-//   await onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//       dispatch(setCurrentUser(user));
-//     } else {
-//       dispatch(setCurrentUser(null));
-//     }
-//   });
-// };
+export const LoggedUser = () => async (dispatch) => {
+  try {
+    let userData = null;
+    await onAuthStateChanged(auth, (user) => {
+      userData = user;
+      console.log('userData', user.uid);
+    });
+    if (userData) {
+      const userId = await userData?.uid;
+      const userDoc = await getDoc(doc(firestore, 'users', userId));
+      const userDetails = userDoc.data();
+      dispatch(
+        setCurrentUser({ userDetails: userDetails, status: true, error: null })
+      );
+    }
+  } catch (e) {
+    // console.log(e, 'is user logged in');
+  } finally {
+  }
+};

@@ -1,7 +1,23 @@
 import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import Button from './custom-button';
+import { AntDesign } from '@expo/vector-icons';
 
-const CustomModalDelete = ({ title, okText, cancelText, openBtn, onPress }) => {
+const CustomModalDelete = ({
+  title,
+  okText,
+  cancelText,
+  onPress,
+  type,
+  isLoading,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleOk = () => {
@@ -11,8 +27,32 @@ const CustomModalDelete = ({ title, okText, cancelText, openBtn, onPress }) => {
 
   return (
     <View style={styles.container}>
+      {/* <Pressable onPress={() => setModalVisible(true)}> */}
+      {/* <TouchableOpacity
+        style={{ backgroundColor: 'red' }}
+        onPress={() => setModalVisible(true)}
+      >
+        {openBtn}
+      </TouchableOpacity> */}
+      {type == 'logout' && (
+        <Button
+          title='Logout'
+          onPress={() => setModalVisible(true)}
+          isLoading={isLoading}
+        />
+      )}
+      {type == 'icon' && (
+        <TouchableOpacity
+          style={{ backgroundColor: 'red' }}
+          onPress={() => setModalVisible(true)}
+        >
+          <AntDesign name='delete' size={24} color='black' />
+        </TouchableOpacity>
+      )}
+      {/* </Pressable> */}
+
       <Modal
-        animationType='slide'
+        animationType='fade'
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -37,12 +77,6 @@ const CustomModalDelete = ({ title, okText, cancelText, openBtn, onPress }) => {
           </View>
         </View>
       </Modal>
-      <Pressable
-        style={[styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text>{openBtn}</Text>
-      </Pressable>
     </View>
   );
 };
@@ -83,10 +117,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     flex: 1,
   },
+
   buttonOpen: {
-    // backgroundColor: '#F194FF',
+    backgroundColor: '#F194FF',
+    borderRadius: 8,
     flex: 1,
   },
+
+  openBtnText: {
+    backgroundColor: 'green',
+  },
+
   buttonDelete: {
     backgroundColor: 'red',
   },

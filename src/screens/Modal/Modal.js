@@ -98,23 +98,27 @@ const MyModal = ({ item }) => {
                 <Text style={styles.modalText}>{editTodo.description}</Text>
               )}
               <View style={styles.bottomNote}>
-                <TouchableOpacity>
+                <TouchableOpacity style={styles.iconCss}>
                   <CustomModalDelete
                     title='Are you sure you want to delete the document?'
                     okText='Delete'
                     cancelText='Cancel'
-                    openBtn={
-                      <AntDesign name='delete' size={24} color='black' />
-                    }
+                    type='icon'
                     onPress={() => deleteTodo(item.id)}
                   />
                 </TouchableOpacity>
                 {isEditable && (
-                  <TouchableOpacity onPress={() => updateTodoHandle(item.id)}>
+                  <TouchableOpacity
+                    onPress={() => updateTodoHandle(item.id)}
+                    style={styles.iconCss}
+                  >
                     <AntDesign name='save' size={24} color='black' />
                   </TouchableOpacity>
                 )}
-                <TouchableOpacity onPress={() => setIsEditable(true)}>
+                <TouchableOpacity
+                  onPress={() => setIsEditable(true)}
+                  style={styles.iconCss}
+                >
                   <AntDesign name='edit' size={24} color='black' />
                 </TouchableOpacity>
               </View>
@@ -187,19 +191,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: '#2196F3',
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 1,
     borderRadius: 16,
     bottom: 20,
   },
   todo: {
     borderRadius: 8,
     borderWidth: 0.5,
-    // width: '100%',
-    // flexGrow: 1,
     borderColor: '#2196F3',
     paddingVertical: 10,
     paddingHorizontal: 50,
     marginBottom: 10,
+  },
+  iconCss: {
+    padding: 8,
   },
 });
 

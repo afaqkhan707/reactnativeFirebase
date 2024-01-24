@@ -8,14 +8,16 @@ import {
 
 const Button = ({ title, onPress, isLoading }) => {
   return (
-    <TouchableOpacity style={styles.Button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
-      {isLoading && (
-        <ActivityIndicator
-          style={{ position: 'absolute', right: 20, top: 10 }}
-        />
-      )}
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity style={styles.Button} onPress={onPress}>
+        <Text style={styles.buttonText}>{title}</Text>
+        {isLoading && (
+          <ActivityIndicator
+            style={{ position: 'absolute', right: 20, top: 10 }}
+          />
+        )}
+      </TouchableOpacity>
+    </>
   );
 };
 
@@ -28,6 +30,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingVertical: 10,
     width: '100%',
+    // flexGrow: 1,
   },
   buttonText: {
     fontSize: 16,

@@ -16,6 +16,7 @@ const SettingsScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+
   const handleLogout = () => {
     dispatch(Logout(navigation));
     navigation.replace('login');
@@ -30,7 +31,6 @@ const SettingsScreen = () => {
           <Text style={styles.email}>{auth.currentUser.email}</Text>
         </View>
       </View>
-
       <View style={styles.settingsContainer}>
         <TouchableOpacity
           style={styles.settingOption}
@@ -45,20 +45,35 @@ const SettingsScreen = () => {
           <Text>Notifications</Text>
         </TouchableOpacity>
       </View>
-
       {/* <Button
         title='Logout'
         onPress={handleLogout}
         isLoading={auth.isLoading}
       /> */}
+      {/* <Button
+        style={styles.logoutButton}
+        title={
+          <CustomModalDelete
+            title='Are you sure you want to Logout?'
+            okText='Logout'
+            cancelText='Cancel'
+            onPress={() => handleLogout()}
+            openBtn='Logout your Account'
+          />
+        }
+        isLoading={auth.isLoading}
+      /> */}
+
       <CustomModalDelete
         title='Are you sure you want to Logout?'
         okText='Logout'
         cancelText='Cancel'
         onPress={() => handleLogout()}
-        openBtn={<Button title='Logout' isLoading={auth.isLoading} />}
-        // openBtn='Logout'
+        type='logout'
+        isloading={auth.isLoading}
       />
+
+      {/* isLoading={auth.isLoading} */}
     </ScrollView>
   );
 };
@@ -80,7 +95,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: 'lightblue',
     marginRight: 15,
-    // Add styling for the avatar container
   },
   username: {
     fontSize: 18,

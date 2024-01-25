@@ -5,6 +5,7 @@ const initialState = {
   error: null,
   isLoggedIn: false,
   isLoading: false,
+  isLoadingPage: false,
 };
 
 const authSlice = createSlice({
@@ -22,15 +23,12 @@ const authSlice = createSlice({
     setLoading: (state, action) => {
       state.isLoading = action.payload;
     },
+    setIsLoadingPage: (state, action) => {
+      state.isLoadingPage = action.payload;
+    },
   },
-  // setLogout: (state, action) => {
-  //   state.currentUser = action.payload.null;
-  //   state.error = action.payload.null;
-  //   state.isLoggedIn = action.payload.false;
-  //   state.isLoading = action.payload.false;
-  // },
 });
 
-export const { setCurrentUser, setError, setLoading, setLogout } =
+export const { setCurrentUser, setError, setLoading, setIsLoadingPage } =
   authSlice.actions;
 export default authSlice.reducer;

@@ -1,6 +1,5 @@
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
@@ -11,7 +10,6 @@ import {
   getDoc,
   collection,
   addDoc,
-  getDocs,
   onSnapshot,
   deleteDoc,
   where,
@@ -48,7 +46,7 @@ export const registerUser = (values, navigation) => async (dispatch) => {
   }
 };
 
-// Handle Login Old User
+// Handle Login  User
 export const loginUser = (values, navigation) => async (dispatch) => {
   dispatch(setLoading(true));
   try {
@@ -72,6 +70,7 @@ export const loginUser = (values, navigation) => async (dispatch) => {
   }
 };
 
+// Handle Logout  User
 export const Logout = (navigation) => async (dispatch) => {
   dispatch(setLoading(true));
 
@@ -79,16 +78,17 @@ export const Logout = (navigation) => async (dispatch) => {
     await signOut(auth);
     dispatch(setCurrentUser({ userDetails: null, status: false, error: null }));
     dispatch(addTodo([]));
-    console.log('Logout successful');
+    // console.log('Logout successful');
     navigation.navigate('login');
   } catch (error) {
-    console.error('Error in logoutUser:', error);
+    // console.error('Error in logoutUser:', error);
     dispatch(setError(error.message));
   } finally {
     dispatch(setLoading(false));
   }
 };
 
+// Handle CreatTodo
 export const postTodo = (todo, userId, navigation) => async (dispatch) => {
   try {
     dispatch(setLoadingAdd(true));
@@ -106,6 +106,7 @@ export const postTodo = (todo, userId, navigation) => async (dispatch) => {
   }
 };
 
+// Handle RemoveTodo
 export const removeTodo = (todoId) => async (dispatch) => {
   try {
     const deletedTodo = await deleteDoc(doc(firestore, 'todos', todoId));
@@ -114,6 +115,8 @@ export const removeTodo = (todoId) => async (dispatch) => {
   } finally {
   }
 };
+
+// Handle UpdateTodo
 export const updateTodo = (localTodo, todoId) => async (dispatch) => {
   const title = localTodo.title;
   const description = localTodo.description;
@@ -132,6 +135,7 @@ export const updateTodo = (localTodo, todoId) => async (dispatch) => {
   }
 };
 
+// Handle FetchTodo
 export const fetchTodos = (userId) => async (dispatch) => {
   const docRef = query(
     collection(firestore, 'todos'),
@@ -144,25 +148,4 @@ export const fetchTodos = (userId) => async (dispatch) => {
     });
     dispatch(addTodo(todo));
   });
-};
-
-export const LoggedUser = () => async (dispatch) => {
-  try {
-    let userData = null;
-    await onAuthStateChanged(auth, (user) => {
-      userData = user;
-      console.log('userData', user.uid);
-    });
-    if (userData) {
-      const userId = await userData?.uid;
-      const userDoc = await getDoc(doc(firestore, 'users', userId));
-      const userDetails = userDoc.data();
-      dispatch(
-        setCurrentUser({ userDetails: userDetails, status: true, error: null })
-      );
-    }
-  } catch (e) {
-    // console.log(e, 'is user logged in');
-  } finally {
-  }
 };

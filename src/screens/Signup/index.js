@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import { signupSchema } from '../../schemas/formikSchemas';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../redux/slices/firebaseActions';
+
 const Signup = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -14,12 +15,15 @@ const Signup = () => {
   const handleLoginNavigation = () => {
     navigation.navigate('login');
   };
+  const errorSignup = useSelector((state) => state.auth.error);
+
   const initialValues = {
     name: '',
     email: '',
     password: '',
     confirm_password: '',
   };
+
   return (
     <View style={styles.container}>
       <StatusBar translucent={false} backgroundColor='#fff' />
@@ -95,10 +99,17 @@ const Signup = () => {
         )}
       </Formik>
       <View style={styles.view}>
-        <Text>Don't have an account?</Text>
+        <Text>Already have an account?</Text>
         <Text style={styles.link} onPress={handleLoginNavigation}>
-          Create One
+          Login
         </Text>
+      </View>
+      <View>
+        {errorSignup && (
+          <>
+            <Text style={{ color: 'red' }}>{errorSignup}</Text>
+          </>
+        )}
       </View>
     </View>
   );
@@ -107,10 +118,9 @@ export default Signup;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    width: '100%',
-    height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -136,7 +146,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   link: {
-    color: '#0000ff',
+    color: '#2196F3',
     marginLeft: 10,
+    textDecorationLine: 'underline',
   },
 });

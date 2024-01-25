@@ -11,7 +11,7 @@ import { loginUser } from '../../redux/slices/firebaseActions';
 const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.auth.error);
+  const errorLogin = useSelector((state) => state.auth.error);
   const handleSignupNavigation = () => {
     navigation.navigate('signup');
   };
@@ -71,23 +71,23 @@ const Login = () => {
               disabled={!values.isValid}
               isLoading={auth.isLoading}
             />
+
             <View style={styles.view}>
-              <Text>Already have an account?</Text>
+              <Text>Don't have an account?</Text>
               <Text style={styles.link} onPress={handleSignupNavigation}>
-                Login
+                Create One
               </Text>
-            </View>
-            <View>
-              {error && (
-                <>
-                  <Text style={{ color: 'red' }}>{error}</Text>
-                  {/* <Text>user email or password does not exist</Text> */}
-                </>
-              )}
             </View>
           </>
         )}
       </Formik>
+      <View>
+        {errorLogin && (
+          <>
+            <Text style={{ color: 'red' }}>{errorLogin}</Text>
+          </>
+        )}
+      </View>
     </View>
   );
 };
@@ -98,8 +98,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    // width: '100%',
-    // height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -125,7 +123,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   link: {
-    color: '#0000ff',
+    color: '#2196F3',
     marginLeft: 10,
+    textDecorationLine: 'underline',
   },
 });

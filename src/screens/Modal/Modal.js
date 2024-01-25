@@ -43,6 +43,7 @@ const MyModal = ({ item }) => {
     setModalVisible(!modalVisible);
     navigation.navigate('Home');
   };
+
   return (
     <>
       {/* <StatusBar translucent={false} backgroundColor='#000' /> */}
@@ -64,27 +65,22 @@ const MyModal = ({ item }) => {
           }}
         >
           <View style={styles.centeredView}>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={closeModal}
-            >
-              <Entypo name='cross' size={24} color='black' />
-            </Pressable>
             <View style={styles.modalView}>
               {isEditable ? (
-                <TouchableOpacity style={styles.todo}>
+                <TouchableOpacity style={styles.inputContainer}>
                   <TextInput
                     onChangeText={(title) =>
                       setEditTodo((prevTodo) => ({ ...prevTodo, title }))
                     }
                     value={editTodo.title}
+                    style={styles.input}
                   />
                 </TouchableOpacity>
               ) : (
                 <Text style={styles.titleText}>{editTodo.title}</Text>
               )}
               {isEditable ? (
-                <TouchableOpacity style={styles.todo}>
+                <TouchableOpacity style={styles.inputContainer}>
                   <TextInput
                     onChangeText={(description) =>
                       setEditTodo((prevTodo) => ({ ...prevTodo, description }))
@@ -92,6 +88,7 @@ const MyModal = ({ item }) => {
                     value={editTodo.description}
                     multiline
                     numberOfLines={5}
+                    style={styles.input}
                   />
                 </TouchableOpacity>
               ) : (
@@ -123,6 +120,12 @@ const MyModal = ({ item }) => {
                 </TouchableOpacity>
               </View>
             </View>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={closeModal}
+            >
+              <Entypo name='cross' size={24} color='black' />
+            </Pressable>
           </View>
         </Modal>
       </View>
@@ -135,18 +138,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: 22,
     backgroundColor: 'rgba(0, 0, 0, .6);',
-    // padding: 20,
     paddingHorizontal: 20,
   },
   modalView: {
-    margin: 20,
+    margin: 16,
     backgroundColor: 'white',
     borderRadius: 20,
-    minHeight: 400,
+    minHeight: 340,
+    maxHeight: 360,
     minWidth: '100%',
-    padding: 24,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -156,6 +159,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    marginTop: 80,
   },
   button: {
     borderRadius: 20,
@@ -190,18 +194,22 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     backgroundColor: '#2196F3',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 1,
     borderRadius: 16,
-    bottom: 20,
+    bottom: 10,
   },
-  todo: {
+  input: {
     borderRadius: 8,
+    minWidth: '90%',
     borderWidth: 0.5,
     borderColor: '#2196F3',
-    paddingVertical: 10,
-    paddingHorizontal: 50,
-    marginBottom: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+  },
+  inputContainer: {
+    borderRadius: 8,
+    marginTop: 10,
   },
   iconCss: {
     padding: 8,

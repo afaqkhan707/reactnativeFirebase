@@ -8,18 +8,17 @@ import {
   ScrollView,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import Button from '../../components/custom-button';
 import { Logout } from '../../redux/slices/firebaseActions';
 import CustomModalDelete from '../../components/custom-modal';
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const auth = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(Logout(navigation));
-    navigation.replace('login');
   };
 
   return (
@@ -27,8 +26,8 @@ const SettingsScreen = () => {
       <View style={styles.userContainer}>
         <View style={styles.avatarContainer}></View>
         <View>
-          <Text style={styles.username}>{auth.currentUser.username}</Text>
-          <Text style={styles.email}>{auth.currentUser.email}</Text>
+          <Text style={styles.username}>{auth?.currentUser?.username}</Text>
+          <Text style={styles.email}>{auth?.currentUser?.email}</Text>
         </View>
       </View>
       <View style={styles.settingsContainer}>
@@ -45,25 +44,6 @@ const SettingsScreen = () => {
           <Text>Notifications</Text>
         </TouchableOpacity>
       </View>
-      {/* <Button
-        title='Logout'
-        onPress={handleLogout}
-        isLoading={auth.isLoading}
-      /> */}
-      {/* <Button
-        style={styles.logoutButton}
-        title={
-          <CustomModalDelete
-            title='Are you sure you want to Logout?'
-            okText='Logout'
-            cancelText='Cancel'
-            onPress={() => handleLogout()}
-            openBtn='Logout your Account'
-          />
-        }
-        isLoading={auth.isLoading}
-      /> */}
-
       <CustomModalDelete
         title='Are you sure you want to Logout?'
         okText='Logout'
@@ -72,12 +52,9 @@ const SettingsScreen = () => {
         type='logout'
         isloading={auth.isLoading}
       />
-
-      {/* isLoading={auth.isLoading} */}
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

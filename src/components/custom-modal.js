@@ -26,14 +26,7 @@ const CustomModalDelete = ({
   };
 
   return (
-    <View style={styles.container}>
-      {/* <Pressable onPress={() => setModalVisible(true)}> */}
-      {/* <TouchableOpacity
-        style={{ backgroundColor: 'red' }}
-        onPress={() => setModalVisible(true)}
-      >
-        {openBtn}
-      </TouchableOpacity> */}
+    <>
       {type == 'logout' && (
         <Button
           title='Logout'
@@ -42,55 +35,56 @@ const CustomModalDelete = ({
         />
       )}
       {type == 'icon' && (
-        <TouchableOpacity
-          style={{ backgroundColor: 'red' }}
-          onPress={() => setModalVisible(true)}
-        >
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <AntDesign name='delete' size={24} color='black' />
         </TouchableOpacity>
       )}
-      {/* </Pressable> */}
-
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.modalView}>
-          <Text style={styles.modalText}>{title}</Text>
-          <View style={styles.buttonContainer}>
-            <Pressable
-              style={[styles.button, styles.buttonDelete]}
-              onPress={handleOk}
-            >
-              <Text style={styles.textStyle}>{okText}</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonCancel]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>{cancelText}</Text>
-            </Pressable>
+      <View style={styles.container}>
+        <Modal
+          animationType='slide'
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{title}</Text>
+            <View style={styles.buttonContainer}>
+              <Pressable
+                style={[styles.button, styles.buttonDelete]}
+                onPress={handleOk}
+              >
+                <Text style={styles.textStyle}>{okText}</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonCancel]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>{cancelText}</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </Modal>
-    </View>
+        </Modal>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, .6);',
+    backgroundColor: 'red',
   },
   modalView: {
-    position: 'absolute',
-    bottom: 10,
-    left: 0,
-    right: 0,
+    position: 'fixed',
+    top: '50%',
+    // bottom: 50%,
+    // left: '50%',
+    // right: 0,
     marginHorizontal: 10,
     backgroundColor: '#fff',
     borderRadius: 20,
@@ -117,17 +111,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     flex: 1,
   },
-
   buttonOpen: {
     backgroundColor: '#F194FF',
     borderRadius: 8,
     flex: 1,
   },
-
   openBtnText: {
     backgroundColor: 'green',
   },
-
   buttonDelete: {
     backgroundColor: 'red',
   },

@@ -1,16 +1,23 @@
-import { StyleSheet } from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../Home';
+import { StyleSheet, Text } from 'react-native';
 import Settings from '../Settings';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Todo from '../Todo';
 import { Entypo } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
 const Dashboard = () => {
+  const auth = useSelector((state) => state.auth);
+
+  if (!auth.isLoggedIn) {
+    return <Text>Please Login</Text>;
+  }
+
   return (
     <Tab.Navigator>
       <Tab.Screen

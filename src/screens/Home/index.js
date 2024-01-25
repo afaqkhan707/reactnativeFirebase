@@ -4,44 +4,42 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useDispatch, useSelector } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { LoggedUser, fetchTodos } from '../../redux/slices/firebaseActions';
-import { firestore } from '../../firebase/firebaseConf';
-import { query, collection, onSnapshot } from 'firebase/firestore';
+import { fetchTodos } from '../../redux/slices/firebaseActions';
 import MyModal from '../Modal/Modal';
 
 const Home = () => {
   const auth = useSelector((state) => state.auth);
-  const userId = useSelector((state) => state.auth?.currentUser.userId);
+  const userId = useSelector((state) => state.auth?.currentUser?.userId);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const addTodo = () => {
     navigation.navigate('todo');
   };
-  const [todos, setTodos] = useState();
 
-  if (!auth.isLoggedIn) {
-    return;
+  const [todos, setTodos] = useState();
+  const todo = useSelector((state) => state.todo);
+  const todosList = useSelector((state) => state.todo.todos);
+
+  if (!todo.todos) {
+    return <ActivityIndicator />;
   }
-  // useEffect(() => {
-  //   dispatch(LoggedUser());
-  // }, []);
 
   useEffect(() => {
     if (userId) dispatch(fetchTodos(userId));
   }, []);
 
-  const todosList = useSelector((state) => state.todo.todos);
   useEffect(() => {
     setTodos(todosList);
-    console.log('todos', todosList);
   }, [todosList]);
-  
+
   return (
     <View style={styles.container}>
       <StatusBar translucent={false} backgroundColor='#fff' />

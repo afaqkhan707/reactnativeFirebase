@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, Image } from 'react-native';
 import MyButton from '../../components/custom-button';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -28,11 +28,14 @@ const Signup = () => {
     <View style={styles.container}>
       <StatusBar translucent={false} backgroundColor='#fff' />
       <Text style={styles.heading}>Sign Up</Text>
+      <Image
+        style={styles.logo}
+        source={require('../../../assets/sign-up-form.png')}
+      />
       <Formik
         initialValues={initialValues}
         validationSchema={signupSchema}
         onSubmit={(values) => {
-          console.log('values', values);
           dispatch(registerUser(values, navigation));
         }}
       >
@@ -149,5 +152,9 @@ const styles = StyleSheet.create({
     color: '#2196F3',
     marginLeft: 10,
     textDecorationLine: 'underline',
+  },
+  logo: {
+    width: 200,
+    height: 150,
   },
 });

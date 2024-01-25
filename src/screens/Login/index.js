@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import MyButton from '../../components/custom-button';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
@@ -20,15 +20,19 @@ const Login = () => {
     email: '',
     password: '',
   };
+
   return (
     <View style={styles.container}>
       <StatusBar translucent={false} backgroundColor='white' />
       <Text style={styles.heading}>Login</Text>
+      <Image
+        style={styles.logo}
+        source={require('../../../assets/authentication.png')}
+      />
       <Formik
         initialValues={initialValues}
         validationSchema={loginSchema}
         onSubmit={(values) => {
-          console.log('values', values);
           dispatch(loginUser(values, navigation));
         }}
       >
@@ -98,7 +102,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -126,5 +129,9 @@ const styles = StyleSheet.create({
     color: '#2196F3',
     marginLeft: 10,
     textDecorationLine: 'underline',
+  },
+  logo: {
+    width: 200,
+    height: 150,
   },
 });
